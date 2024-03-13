@@ -1,0 +1,97 @@
+#include <iostream>
+#include <cstring>
+
+using namespace std;
+
+void sortowanieBabelkowe(int* tab, int size)
+{
+    for (int i = 0; i < size - 1; ++i) {
+        for (int j = 0; j < size - i - 1; ++j) {
+            if (tab[j] > tab[j + 1]) {
+                // Zamiana miejscami
+                int temp = tab[j];
+                tab[j] = tab[j + 1];
+                tab[j + 1] = temp;
+            }
+        }
+    }
+}
+
+void sortowanieWstawianie(int* tab, int size)
+{
+    for (int i = 1; i < size; ++i) {
+        int key = tab[i];
+        int j = i - 1;
+        
+        // Przesuwanie elementów większych od key w górę
+        while (j >= 0 && tab[j] > key) {
+            tab[j + 1] = tab[j];
+            j = j - 1;
+        }
+        tab[j + 1] = key;
+    }
+}
+
+void wypiszTablice(int* tab, int size)
+{
+    for (int i = 0; i < size; ++i) {
+        cout << tab[i] << " ";
+    }
+    cout << endl;
+}
+
+bool porownajTablice(int* tab1, int size1, int* tab2, int size2)
+{
+    if (size1 != size2)
+        return false;
+
+    for (int i = 0; i < size1; ++i) {
+        if (tab1[i] != tab2[i])
+            return false;
+    }
+    return true;
+}
+
+void sortowanieBabelkoweTest() {
+    cout << "Test sortowania bąbelkowego" << endl;
+    int tab[] = { 7, 15, 5, 1, 9, 10, 2, 6, 20 };
+    int tabRes[] = { 1, 2, 5, 6, 7, 9, 10, 15, 20 };
+    int size = sizeof(tab) / sizeof(*tab);
+    {
+        int* tab1 = new int[size];
+        memcpy(tab1, tab, sizeof(tab));
+        wypiszTablice(tab1, size);
+        sortowanieBabelkowe(tab1, size);
+        wypiszTablice(tab1, size);
+        if (porownajTablice(tab1, size, tabRes, size))
+            cout << "Sortowanie OK" << endl;
+        else
+            cout << "Sortowanie !!! BLAD !!!" << endl;
+        delete[] tab1;
+    }   
+}
+
+void sortowanieWstawianieTest() {
+    cout << "Test sortowania przez wstawianie " << endl;
+    int tab[] = { 7, 15, 5, 1, 9, 10, 2, 6, 20 };
+    int tabRes[] = { 1, 2, 5, 6, 7, 9, 10, 15, 20 };
+    int size = sizeof(tab) / sizeof(*tab);
+    {
+        int* tab1 = new int[size];
+        memcpy(tab1, tab, sizeof(tab));
+        wypiszTablice(tab1, size);
+        sortowanieWstawianie(tab1, size);
+        wypiszTablice(tab1, size);
+        if (porownajTablice(tab1, size, tabRes, size))
+            cout << "Sortowanie OK" << endl;
+        else
+            cout << "Sortowanie !!! BLAD !!!" << endl;
+        delete[] tab1;
+    }   
+}
+
+int main() {
+    sortowanieBabelkoweTest();
+    sortowanieWstawianieTest();
+    return 0;
+}
